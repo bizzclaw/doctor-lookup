@@ -1,0 +1,1 @@
+const APIKEY = require("./../.env");
