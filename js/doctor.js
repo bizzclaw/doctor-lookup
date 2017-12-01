@@ -6,6 +6,22 @@ import { Symptom } from "./../js/symptom.js";
 
 export class Doctor {
 
+	static GetSymptoms(callback) {
+		$.ajax({
+			url: `https://api.betterdoctor.com/2016-03-01/conditions?user_key=${BDKEY}`,
+			type: "GET",
+			data: {
+				format: "json"
+			},
+			success: function(response) {
+				callback(response);
+			},
+			error: function(error) {
+				callback(false, error);
+			}
+		});
+	}
+
 	static FindDoctors(location, callback, radius = 200, limit = 10) {
 		let locationStr = Location.GetSearchLocation(location);
 		location.GetClientLocation(locationStr, function(userPosStr) {
