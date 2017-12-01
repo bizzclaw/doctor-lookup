@@ -2,11 +2,10 @@ const API = require("./../.env");
 const BDKEY = API.betterDoctor;
 
 import { Location } from "./../js/location.js";
-import { Symptom } from "./../js/symptom.js";
 
 export class Doctor {
 
-	static GetSymptoms(callback) {
+	static GetConditions(callback) {
 		$.ajax({
 			url: `https://api.betterdoctor.com/2016-03-01/conditions?user_key=${BDKEY}`,
 			type: "GET",
