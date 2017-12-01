@@ -1,0 +1,22 @@
+{
+  "name": "doctor",
+  "description": "Finds doctors using API",
+  "main": "index.js",
+  "authors": [
+    "Joseph Tomlinson"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.2.1",
+    "bootstrap": "^3.3.7",
+    "moment": "^2.19.2"
+  }
+}
