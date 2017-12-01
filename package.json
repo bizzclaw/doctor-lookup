@@ -11,7 +11,16 @@
     "url": "https://github.com/bizzclaw/epicodus-doctors.git"
   },
   "browserify": {
-    "transform": [["babelify", { "presets": ["es2015"] }]]
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "es2015"
+          ]
+        }
+      ]
+    ]
   },
   "author": "Joseph Tomlinson",
   "license": "ISC",
