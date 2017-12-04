@@ -9,12 +9,27 @@
     <script type="text/javascript" src="build/js/app.js"></script>
   </head>
   <body>
-    <div class="jumbotron">
-      <h3>Medic!</h3>
+    <div class="jumbotron text-center">
+      <h1>Medic!</h1>
     </div>
+
     <div class="container">
-      <div id="symptoms">
-        
+      <div class="row">
+        <div class="col-md-5 panel pnl-default conditions-panel">
+          <h2 class="conditions-header">Search By Conditions</h2>
+          <div id="conditions-results">
+          </div>
+          <ul id="conditions-pager" class="pager prevnext">
+            <button class="page-select" pagedir="-1">< Prev</button>
+            <li id="pagecount">1</li>
+            <button class="page-select" pagedir="1">Next ></button>
+          </ul>
+        </div>
+        <div class="col-md-2 text-center">
+        </div>
+        <div class="col-md-5 panel pnl-default conditions-panel">
+          <h2 class="conditions-header">Location</h2>
+        </div>
       </div>
     </div>
   </body>
