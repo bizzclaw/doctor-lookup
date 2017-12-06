@@ -4,7 +4,8 @@ const RESULTSPERPAGE = 20;
 
 import { Location } from "./../js/location.js";
 
-let _conditionsCache = []
+let _conditionsCache = [];
+let _doctorCache = {};
 let _lastApiCall = 0;
 export class Doctor {
 
@@ -42,14 +43,20 @@ export class Doctor {
 		return false;
 	}
 
-	static FindDoctors(location, callback, radius = 200, limit = 10) {
+	static FindDoctors(location, conditionUid, callback, radius = 200, limit = 10) {
+		let cached = _doctorCache[conditionUid]
+		if (cached) {
+			callback(cached)
+			return true
+		}
+
 		let locationStr = Location.GetSearchLocation(location);
 		location.GetClientLocation(locationStr, function(userPosStr) {
 			// concat the radius after we've already used the center pos as a fallback
 			locationStr += ", " + radius;
 			console.log(locationStr);
 			$.ajax({
-				url: `https://api.betterdoctor.com/2016-03-01/doctors?location=${locationStr}&user_location=${userPosStr}&skip=0&limit=${limit}&user_key=${APIKEY}`,
+				url: `https://api.betterdoctor.com/2016-03-01/doctors?location=${locationStr}&query=${conditionUid}&user_location=${userPosStr}&skip=0&limit=${limit}&user_key=${APIKEY}`,
 				type: "GET",
 				data: {
 					format: "json"

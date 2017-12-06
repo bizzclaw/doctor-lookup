@@ -34,7 +34,7 @@ $(document).ready(function() {
 				button.toggleClass("selected");
 				let uid = button.attr("uid");
 				selectedCondition = uid;
-				});
+			});
 
 			$("#pagecount").text(conditionPage + 1);
 			return true

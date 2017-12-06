@@ -58,13 +58,13 @@ $ gulp serve
 
 ## Specs
 
-Description: User can select from a list of conditions
+Description: User can search from a list of conditions
 * Input: `Select "Acne"`
-* Output: `Acne Selected`
+* Output: `All doctors related to acne will appear on the right`
 
-Description: User can 
-* Input: `Select "Acne"`
-* Output: `Acne Selected`
+Description: User can select a doctor for more information
+* Input: `Select Doctor Person`
+* Output: `A panel below the search panels will show information about Doctor Person`
 
 
 ## legal
