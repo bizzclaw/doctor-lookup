@@ -5,7 +5,7 @@ $(document).ready(function() {
 
 	let conditionPage = 0
 	let resultsPanel = $("#conditions-results")
-	let selectedConditions = {}
+	let selectedCondition;
 
 	let fillConditions = function(page) {
 		let loadConditions = new Promise((resolve, reject) => {
@@ -18,21 +18,22 @@ $(document).ready(function() {
 			$(".page-select").removeClass("disabled");
 			if (!response.data || response.data.length < 1) {
 				conditionPage -= 1;
-				return false
+				return false;
 			}
 
 			resultsPanel.empty();
 
 			response.data.forEach(function(condition) {
-				let selected = selectedConditions[condition.uid];
-				resultsPanel.append(`<p class="panel-button condition-available ${selected === true ? "selected" : ""}" uid=${condition.uid}>${condition.name}</p>`);
+				resultsPanel.append(`<p class="panel-button condition-available ${selectedCondition === condition.uid ? "selected" : ""}" uid=${condition.uid}>${condition.name}</p>`);
 			});
 
 			$(".condition-available").click(function() {
 				let button = $(this)
+				let select = !button.hasClass("selected");
+				$(".condition-available").removeClass("selected")
 				button.toggleClass("selected");
 				let uid = button.attr("uid");
-				selectedConditions[uid] = !selectedConditions[uid];
+				selectedCondition = uid;
 				});
 
 			$("#pagecount").text(conditionPage + 1);

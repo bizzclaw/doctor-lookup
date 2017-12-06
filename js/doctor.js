@@ -12,12 +12,14 @@ export class Doctor {
 	static GetConditions(page, callback) {
 
 		if (_conditionsCache[page]) {
-			callback(_conditionsCache[page]); // callback with cached result instead of wasting api calls.
+			// callback with cached result instead of wasting api calls.
+			callback(_conditionsCache[page]);
 			return true;
 		}
 
 		let now = performance.now()
-		if (now < _lastApiCall + 0.5) { // ideally you'd want to tie something like this to a particular user/IP address, or put it in a que but it's clientside so whatever
+		// ideally you'd want to tie something like this to a particular user/IP address, or put it in a que but it's clientside so whatever
+		if (now < _lastApiCall + 0.5) {
 			return false;
 		}
 		_lastApiCall = now;
@@ -29,7 +31,8 @@ export class Doctor {
 				format: "json"
 			},
 			success: function(response) {
-				_conditionsCache[page] = response; // memory is cheaper than API calls.
+				// memory is cheaper than API calls
+				_conditionsCache[page] = response;
 				callback(response);
 			},
 			error: function(error) {
@@ -42,7 +45,8 @@ export class Doctor {
 	static FindDoctors(location, callback, radius = 200, limit = 10) {
 		let locationStr = Location.GetSearchLocation(location);
 		location.GetClientLocation(locationStr, function(userPosStr) {
-			locationStr += ", " + radius; // concat the radius after we've already used the center pos as a fallback
+			// concat the radius after we've already used the center pos as a fallback
+			locationStr += ", " + radius;
 			console.log(locationStr);
 			$.ajax({
 				url: `https://api.betterdoctor.com/2016-03-01/doctors?location=${locationStr}&user_location=${userPosStr}&skip=0&limit=${limit}&user_key=${APIKEY}`,
