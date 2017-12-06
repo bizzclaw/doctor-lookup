@@ -6,7 +6,7 @@
     "Joseph Tomlinson"
   ],
   "license": "ISC",
-  "homepage": "",
+  "homepage": "https://github.com/bizzclaw/doctor-lookup",
   "ignore": [
     "**/.*",
     "node_modules",

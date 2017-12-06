@@ -1,29 +1,35 @@
-const API = require("./../.env");
-const BDKEY = API.betterDoctor;
-const RESULTSPERPAGE = 20
+const ENV = require("./../.env");
+const APIKEY = ENV.apiKey;
+const RESULTSPERPAGE = 20;
 
 import { Location } from "./../js/location.js";
 
 let _conditionsCache = []
-
+let _lastApiCall = 0;
 export class Doctor {
 
 
 	static GetConditions(page, callback) {
+
 		if (_conditionsCache[page]) {
 			callback(_conditionsCache[page]); // callback with cached result instead of wasting api calls.
 			return true;
 		}
-		let skip = RESULTSPERPAGE * page;
-		let limit = RESULTSPERPAGE;
+
+		let now = performance.now()
+		if (now < _lastApiCall + 0.5) { // ideally you'd want to tie something like this to a particular user/IP address, or put it in a que but it's clientside so whatever
+			return false;
+		}
+		_lastApiCall = now;
+
 		$.ajax({
-			url: `https://api.betterdoctor.com/2016-03-01/conditions?skip=${skip}&limit=${limit}&user_key=${BDKEY}`,
+			url: `https://api.betterdoctor.com/2016-03-01/conditions?skip=${RESULTSPERPAGE * page}&limit=${RESULTSPERPAGE}&user_key=${APIKEY}`,
 			type: "GET",
 			data: {
 				format: "json"
 			},
 			success: function(response) {
-				_conditionsCache[page] = response;
+				_conditionsCache[page] = response; // memory is cheaper than API calls.
 				callback(response);
 			},
 			error: function(error) {
@@ -39,7 +45,7 @@ export class Doctor {
 			locationStr += ", " + radius; // concat the radius after we've already used the center pos as a fallback
 			console.log(locationStr);
 			$.ajax({
-				url: `https://api.betterdoctor.com/2016-03-01/doctors?location=${locationStr}&user_location=${userPosStr}&skip=0&limit=${limit}&user_key=${BDKEY}`,
+				url: `https://api.betterdoctor.com/2016-03-01/doctors?location=${locationStr}&user_location=${userPosStr}&skip=0&limit=${limit}&user_key=${APIKEY}`,
 				type: "GET",
 				data: {
 					format: "json"

@@ -10,7 +10,7 @@ export class Location {
 
 	static GetClientLocation(fallback, callback) {
 		try {
-			let geoPos = navigator.geolocation.watchPosition(function() {
+			let geoPos = navigator.geolocation.watchPosition(function(position) {
 				let lat = position.coords.latitude;
 				let lon = position.coords.longitude;
 				let locationStr = lat + ", " + lon;
@@ -43,6 +43,11 @@ export class Location {
 }
 
 new Location("Portland", {
-	lon: 45.5231,
-	lat: 122.6765
+	lat: 45.5231,
+	lon: 122.6765
+});
+
+new Location("San Francisco", {
+	lat: 37.7749,
+	lon: 122.4194
 });

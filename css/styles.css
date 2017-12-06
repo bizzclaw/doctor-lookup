@@ -5,10 +5,8 @@ body {
 .conditions-panel {
   height: 512px;
   padding: 0px;
-  background-color: black;
+  background-color: rgb(50,50,50);
 }
-
-
 .conditions-header {
   height: 64px;
   background-color: white;
@@ -18,23 +16,22 @@ body {
   margin: -1px;
 }
 
-.condition-list {
-  background-color: black;
+.panel-button {
   color: white;
   margin: -1px;
   padding-left: 20px;
   width: 100%;
 }
 
-.condition-list:hover {
+.panel-button:hover {
   cursor: pointer;
-  background-color: white;
+  background-color: rgb(200,200,200);
   color: black;
 }
 
 .page-select {
   width: 40%;
-  background-color: black;
+  background-color: rgba(0,0,0,0);
   color: white;
   border-style: solid;
   border-color: white;
@@ -45,11 +42,20 @@ body {
   color: black;
 }
 
+.selected {
+  background-color: rgb(100, 100, 100);
+  color: rgb(0, 130, 255);
+}
+
+.selected:hover {
+  background-color: rgb(255, 255, 255);
+}
+
 #pagecount {
   width: 20%;
   color: white
 }
 
-#conditions-results {
+.colum-panel {
   height: 388px;
 }
