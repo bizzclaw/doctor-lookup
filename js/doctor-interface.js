@@ -65,7 +65,33 @@ $(document).ready(function() {
 				});
 
 				loadDoctors.then((response) => {
-					// response.data. 
+					$("#doctor-list").empty();
+					for (var i = 0; i < response.data.length; i++) {
+						let doctor = response.data[i];
+						let doctorName = doctor.profile.first_name + " " + doctor.profile.last_name;
+						$("#doctor-list").append(`<p class="panel-button doctor-button" doctorid="${i}">${doctorName}</p>`);
+					}
+					$(".doctor-button").click(function() {
+
+						let doctor = response.data[$(this).attr("doctorid")]
+						console.log(doctor);
+
+						$("#doctor-name").text(doctor.profile.first_name + " " + doctor.profile.last_name);
+						$("#doctor-bio").text(doctor.profile.bio);
+
+						$("#doctor-img").attr("src", doctor.profile.image_url);
+						var closest;
+						doctor.practices.forEach(function(practice) {
+							let distance = practice.distance;
+							closest = closest ? closest < distance ? distance : closest : distance; // just find the closest darn practice.
+						});
+						$("#doctor-distance").text("Distance: " + Math.floor(closest)); // I have no idea what better doctor's unit of measurement is. Kilometers? Miles? can't find any documentation
+
+						$("#doctor-search").fadeOut(500);
+						setTimeout(function() {
+							$("#doctor-info").fadeIn(500);
+						}, 500);
+					});
 				});
 			});
 
@@ -73,4 +99,11 @@ $(document).ready(function() {
 			return true;
 		});
 	};
+
+	$("#doctor-back").click(function() {
+		$("#doctor-info").fadeOut(500);
+		setTimeout(function() {
+			$("#doctor-search").fadeIn(500);
+		}, 500);
+	});
 });

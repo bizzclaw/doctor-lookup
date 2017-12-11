@@ -28,7 +28,7 @@ body {
   background-color: rgb(200,200,200);
   color: black;
 }
- 
+
 .page-select {
   width: 40%;
   background-color: rgba(0,0,0,0);
@@ -58,4 +58,20 @@ body {
 
 .colum-panel {
   height: 388px;
+}
+
+#doctor-info {
+  display: none;
+}
+
+#doctor-list {
+  overflow: scroll;
+}
+
+#doctor-img {
+  width: 100%;
+  height: auto;
+  border-style: solid;
+  border-width: 4px;
+  border-color: rgb(70,70,70);
 }
