@@ -74,7 +74,6 @@ $(document).ready(function() {
 					$(".doctor-button").click(function() {
 
 						let doctor = response.data[$(this).attr("doctorid")]
-						console.log(doctor);
 
 						$("#doctor-name").text(doctor.profile.first_name + " " + doctor.profile.last_name);
 						$("#doctor-bio").text(doctor.profile.bio);
@@ -85,7 +84,7 @@ $(document).ready(function() {
 							let distance = practice.distance;
 							closest = closest ? closest < distance ? distance : closest : distance; // just find the closest darn practice.
 						});
-						$("#doctor-distance").text("Distance: " + Math.floor(closest)); // I have no idea what better doctor's unit of measurement is. Kilometers? Miles? can't find any documentation
+						$("#doctor-distance").text("Distance: " + Math.floor(closest)); // I have no idea what better distance unit of measurement is. Kilometers? Miles? can't find any documentation
 
 						$("#doctor-search").fadeOut(500);
 						setTimeout(function() {
