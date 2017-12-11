@@ -42,22 +42,33 @@ $(document).ready(function() {
 			$("#doctor-list").append(`<p class="panel-button doctor-button" doctorid="${i}">${doctorName}</p>`);
 		}
 		$(".doctor-button").click(function() {
-
-			$("#doctor-bio").empty()
-			$("#doctor-details").empty()
+			let bio = $("#doctor-bio")
+			let details = $("#doctor-details")
+			bio.empty()
+			details.empty()
 
 			let doctor = response.data[$(this).attr("doctorid")]
 
-			$("#doctor-bio").append("<h1>" + doctor.profile.first_name + " " + doctor.profile.last_name + "</h1>");
-			$("#doctor-bio").append("<p>" + doctor.profile.bio + "</p>");
+			console.log(doctor);
 
-			$("#doctor-details").append(`<img class="doctor-img" src = "` + doctor.profile.image_url + `">`);
-			var closest;
+			bio.append("<h1>" + doctor.profile.first_name + " " + doctor.profile.last_name + "</h1>");
+			bio.append("<p>" + doctor.profile.bio + "</p>");
+
+			details.append(`<img class="doctor-img" src = "` + doctor.profile.image_url + `">`);
+			var closestPractice;
 			doctor.practices.forEach(function(practice) {
-				let distance = practice.distance;
-				closest = closest ? closest < distance ? distance : closest : distance; // just find the closest darn practice.
+				if (practice.accepting && (!closestPractice || closestPractice.distance < distance)) {
+					closestPractice = practice;
+				}
 			});
-			$("#doctor-details").append("<h3>Distance: " + Math.floor(closest) + "</h3>"); // I have no idea what better distance unit of measurement is. Kilometers? Miles? can't find any documentation
+			if (closestPractice) {
+				details.append("<h2>Currently Accepting Patients!<h2>");
+				details.append("<h3>Distance of closest Practice: " + Math.floor(closest) + "</h3>"); // I have no idea what better distance unit of measurement is. Kilometers? Miles? can't find any documentation
+				details.append(`<h3>Address: ${closestPractice.address}`);
+			}
+			else {
+				details.append(`<h2 class="error">Not Accepting Patients<h2>`);
+			}
 
 			$("#doctor-search").fadeOut(500);
 			setTimeout(function() {
