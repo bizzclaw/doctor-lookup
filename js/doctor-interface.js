@@ -7,14 +7,13 @@ $(document).ready(function() {
 	let resultsPanel = $("#conditions-results");
 	let selectedCondition;
 	let userPosStr;
+	let city = Location.Find(0); // just use portland for now
 
 	let loadPosition = new Promise((resolve, reject) => {
 		Location.GetClientLocation(function(userPos) {
-			console.log(userPos);
 			resolve(userPos);
 		});
 	});
-
 
 	loadPosition.then((userPos) => {
 		userPosStr = userPos;
@@ -27,6 +26,59 @@ $(document).ready(function() {
 			fillConditions(conditionPage);
 		});
 	});
+
+	function fillDoctors(response) {
+		$("#doctor-list").empty();
+
+		if (!response || !response.data || response.data.length <= 0) {
+			let errorMessage = response ? "No Doctors Found" : "Server Error"
+			$("#doctor-list").append(`<h1 class="error">${errorMessage}</h1>`);
+			return false;
+		}
+
+		for (var i = 0; i < response.data.length; i++) {
+			let doctor = response.data[i];
+			let doctorName = doctor.profile.first_name + " " + doctor.profile.last_name;
+			$("#doctor-list").append(`<p class="panel-button doctor-button" doctorid="${i}">${doctorName}</p>`);
+		}
+		$(".doctor-button").click(function() {
+
+			$("#doctor-bio").empty()
+			$("#doctor-details").empty()
+
+			let doctor = response.data[$(this).attr("doctorid")]
+
+			$("#doctor-bio").append("<h1>" + doctor.profile.first_name + " " + doctor.profile.last_name + "</h1>");
+			$("#doctor-bio").append("<p>" + doctor.profile.bio + "</p>");
+
+			$("#doctor-details").append(`<img class="doctor-img" src = "` + doctor.profile.image_url + `">`);
+			var closest;
+			doctor.practices.forEach(function(practice) {
+				let distance = practice.distance;
+				closest = closest ? closest < distance ? distance : closest : distance; // just find the closest darn practice.
+			});
+			$("#doctor-details").append("<h3>Distance: " + Math.floor(closest) + "</h3>"); // I have no idea what better distance unit of measurement is. Kilometers? Miles? can't find any documentation
+
+			$("#doctor-search").fadeOut(500);
+			setTimeout(function() {
+				$("#doctor-info").fadeIn(500);
+			}, 500);
+		});
+	}
+
+	$("#name-search").click(function() {
+		$(".condition-available").removeClass("selected");
+		let loadDoctors = new Promise((resolve, reject) => {
+			Doctor.FindDoctors("name", $("#name-input").val(), userPosStr, city, function(response) {
+				resolve(response);
+			});
+		});
+
+		loadDoctors.then((response) => {
+			fillDoctors(response);
+		});
+	});
+
 
 	function fillConditions(page) {
 		let loadConditions = new Promise((resolve, reject) => {
@@ -56,41 +108,14 @@ $(document).ready(function() {
 				let uid = button.attr("uid");
 				selectedCondition = uid;
 
-				let city = Location.Find(0); // just use portland for now
-
 				let loadDoctors = new Promise((resolve, reject) => {
-					Doctor.FindDoctors(uid, userPosStr, city, function(response) {
+					Doctor.FindDoctors("query",uid, userPosStr, city, function(response) {
 						resolve(response);
 					});
 				});
 
 				loadDoctors.then((response) => {
-					$("#doctor-list").empty();
-					for (var i = 0; i < response.data.length; i++) {
-						let doctor = response.data[i];
-						let doctorName = doctor.profile.first_name + " " + doctor.profile.last_name;
-						$("#doctor-list").append(`<p class="panel-button doctor-button" doctorid="${i}">${doctorName}</p>`);
-					}
-					$(".doctor-button").click(function() {
-
-						let doctor = response.data[$(this).attr("doctorid")]
-
-						$("#doctor-name").text(doctor.profile.first_name + " " + doctor.profile.last_name);
-						$("#doctor-bio").text(doctor.profile.bio);
-
-						$("#doctor-img").attr("src", doctor.profile.image_url);
-						var closest;
-						doctor.practices.forEach(function(practice) {
-							let distance = practice.distance;
-							closest = closest ? closest < distance ? distance : closest : distance; // just find the closest darn practice.
-						});
-						$("#doctor-distance").text("Distance: " + Math.floor(closest)); // I have no idea what better distance unit of measurement is. Kilometers? Miles? can't find any documentation
-
-						$("#doctor-search").fadeOut(500);
-						setTimeout(function() {
-							$("#doctor-info").fadeIn(500);
-						}, 500);
-					});
+					fillDoctors(response);
 				});
 			});
 

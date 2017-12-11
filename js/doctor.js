@@ -43,8 +43,8 @@ export class Doctor {
 		return false;
 	}
 
-	static FindDoctors(conditionUid, userPosStr, location, callback, radius = 200, limit = 10) {
-		let cached = _doctorCache[conditionUid];
+	static FindDoctors(searchType, searchFor, userPosStr, location, callback, radius = 200, limit = 10) {
+		let cached = _doctorCache[searchFor];
 		if (cached) {
 			callback(cached);
 			return true;
@@ -53,9 +53,7 @@ export class Doctor {
 		let locationStr = location.GetSearchLocation();
 		// concat the radius after we've already used the center pos as a fallback
 		locationStr += "," + radius;
-		console.log(userPosStr);
-		let call = `https://api.betterdoctor.com/2016-03-01/doctors?location=${locationStr}&query=${conditionUid}&user_location=${userPosStr}&skip=0&limit=${limit}&user_key=${APIKEY}`
-		console.log(call);
+		let call = `https://api.betterdoctor.com/2016-03-01/doctors?location=${locationStr}&${searchType}=${searchFor}&user_location=${userPosStr}&skip=0&limit=${limit}&user_key=${APIKEY}`
 
 		$.ajax({
 			url: call,

@@ -31,18 +31,26 @@
           <h2 class="conditions-header">Doctors</h2>
           <div id="doctor-list" class="colum-panel">
           </div>
+          <div class="row">
+            <div class="col-md-10">
+              <div class="form-group">
+                <input id="name-input" placeholder="Search by name" class="form-control">
+              </div>
+            </div>
+            <div class="col-md-2">
+              <button id="name-search" class="btn btn-default">Go</button>
+            </div>
+          </div>
         </div>
       </div>
       <div id="doctor-info" class="row">
-        <div class="col-md-9">
-          <h1 id = "doctor-name">John Doe</h1>
-          <p id="doctor-bio">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <div class="col-md-9" id="doctor-bio">
         </div>
-        <div class="col-md-3">
-          <img id="doctor-img" src="https://www.iaspaper.net/wp-content/uploads/2017/01/Doctor.jpg">
-          <h3 id="doctor-distance">5 miles away</h3>
+        <div class="col-md-3" id="doctor-details">
         </div>
-        <button id="doctor-back" class="btn btn-default btn-lg">Return</button>
+        <div class="doctor-subinfo row text-center">
+          <button id="doctor-back" class="btn btn-default btn-lg">Return</button>
+        </div>
       </div>
     </div>
   </body>
