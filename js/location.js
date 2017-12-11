@@ -8,17 +8,17 @@ let _geoArgs = {
 
 export class Location {
 
-	static GetClientLocation(fallback, callback) {
+	static GetClientLocation(callback) {
 		try {
 			let geoPos = navigator.geolocation.watchPosition(function(position) {
 				let lat = position.coords.latitude;
 				let lon = position.coords.longitude;
-				let locationStr = lat + ", " + lon;
+				let locationStr = lat + "," + lon;
 				callback(locationStr);
-			}, fallback, _geoArgs);
+			});
 		}
 		catch (error) {
-			callback(fallback);
+			callback(false);
 		}
 	}
 
@@ -38,16 +38,16 @@ export class Location {
 	}
 
 	GetSearchLocation() {
-		return this.data.lon + ", " + this.data.lan;
+		return this.data.lat + "," + this.data.lon;
 	}
 }
 
 new Location("Portland", {
-	lat: 45.5231,
-	lon: 122.6765
+	lat: 45.523,
+	lon: -122.676
 });
 
 new Location("San Francisco", {
-	lat: 37.7749,
-	lon: 122.4194
+	lat: 37.774,
+	lon: -122.419
 });

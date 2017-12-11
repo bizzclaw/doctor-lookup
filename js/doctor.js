@@ -18,7 +18,7 @@ export class Doctor {
 			return true;
 		}
 
-		let now = performance.now()
+		let now = performance.now();
 		// ideally you'd want to tie something like this to a particular user/IP address, or put it in a que but it's clientside so whatever
 		if (now < _lastApiCall + 0.5) {
 			return false;
@@ -43,31 +43,32 @@ export class Doctor {
 		return false;
 	}
 
-	static FindDoctors(location, conditionUid, callback, radius = 200, limit = 10) {
-		let cached = _doctorCache[conditionUid]
+	static FindDoctors(conditionUid, userPosStr, location, callback, radius = 200, limit = 10) {
+		let cached = _doctorCache[conditionUid];
 		if (cached) {
-			callback(cached)
-			return true
+			callback(cached);
+			return true;
 		}
 
-		let locationStr = Location.GetSearchLocation(location);
-		location.GetClientLocation(locationStr, function(userPosStr) {
-			// concat the radius after we've already used the center pos as a fallback
-			locationStr += ", " + radius;
-			console.log(locationStr);
-			$.ajax({
-				url: `https://api.betterdoctor.com/2016-03-01/doctors?location=${locationStr}&query=${conditionUid}&user_location=${userPosStr}&skip=0&limit=${limit}&user_key=${APIKEY}`,
-				type: "GET",
-				data: {
-					format: "json"
-				},
-				success: function(response) {
-					callback(response);
-				},
-				error: function(error) {
-					callback(false, error);
-				}
-			});
+		let locationStr = location.GetSearchLocation();
+		// concat the radius after we've already used the center pos as a fallback
+		locationStr += "," + radius;
+		console.log(userPosStr);
+		let call = `https://api.betterdoctor.com/2016-03-01/doctors?location=${locationStr}&query=${conditionUid}&user_location=${userPosStr}&skip=0&limit=${limit}&user_key=${APIKEY}`
+		console.log(call);
+
+		$.ajax({
+			url: call,
+			type: "GET",
+			data: {
+				format: "json"
+			},
+			success: function(response) {
+				callback(response, userPosStr);
+			},
+			error: function(error) {
+				callback(false);
+			}
 		});
 	}
 }
