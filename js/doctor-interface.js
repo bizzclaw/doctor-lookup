@@ -64,7 +64,7 @@ $(document).ready(function() {
 			if (closestPractice) {
 				details.append("<h2>Currently Accepting Patients!<h2>");
 				details.append("<h3>Distance of closest Practice: " + Math.floor(closest) + "</h3>"); // I have no idea what better distance unit of measurement is. Kilometers? Miles? can't find any documentation
-				details.append(`<h3>Address: ${closestPractice.address}`);
+				// details.append(`<h3>Address: ${closestPractice.address}`);
 			}
 			else {
 				details.append(`<h2 class="error">Not Accepting Patients<h2>`);
